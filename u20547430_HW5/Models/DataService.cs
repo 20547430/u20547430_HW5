@@ -102,6 +102,8 @@ namespace u20547430_HW5.Models
             //serach books
             //filter books by type
             //filter books by author 
+            //borrow book
+            //return book
         }
     }
 }
