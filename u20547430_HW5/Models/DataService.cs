@@ -98,12 +98,52 @@ namespace u20547430_HW5.Models
 
             }
             return books;
+        }
+        //serach books
+        //filter books by type
 
-            //serach books
-            //filter books by type
-            //filter books by author 
+
+        //filter books by author (getAllBooksByAuthor)
+        public List<Book> getAllBooksByAuthor(string name,string surname)
+        {
+            List<Book> books = new List<Book>();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("select * from books", con))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@name",name));
+                    cmd.Parameters.Add(new SqlParameter("@surnamename", surname));
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Book bk = new Book
+                            {
+                                BookID = Convert.ToInt32(reader["bookId"]),
+                                Name = Convert.ToString(reader["name"]),
+                                PageCount = Convert.ToInt32(reader["pagecount"]),
+                                Point = Convert.ToInt32(reader["point"]),
+                                AuthorID = Convert.ToInt32(reader["authorId"])
+                            };
+                            books.Add(bk);
+                        }
+                    }
+
+                }
+                con.Close();
+
+            }
+            return books;
+
+
+
+
+
+
             //borrow book
             //return book
         }
-    }
 }
