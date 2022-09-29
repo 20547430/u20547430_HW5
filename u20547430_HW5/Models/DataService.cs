@@ -75,7 +75,7 @@ namespace u20547430_HW5.Models
 
             {
                 con.Open();
-            using (SqlCommand cmd = new SqlCommand("select * from books", con))
+                using (SqlCommand cmd = new SqlCommand("select * from books", con))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -104,7 +104,7 @@ namespace u20547430_HW5.Models
 
 
         //filter books by author (getAllBooksByAuthor)
-        public List<Book> getAllBooksByAuthor(string name,string surname)
+        public List<Book> getAllBooksByAuthor(string name, string surname)
         {
             List<Book> books = new List<Book>();
             using (SqlConnection con = new SqlConnection(ConnectionString))
@@ -113,7 +113,7 @@ namespace u20547430_HW5.Models
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("select * from books", con))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@name",name));
+                    cmd.Parameters.Add(new SqlParameter("@name", name));
                     cmd.Parameters.Add(new SqlParameter("@surnamename", surname));
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -146,4 +146,5 @@ namespace u20547430_HW5.Models
             //borrow book
             //return book
         }
+    }
 }
