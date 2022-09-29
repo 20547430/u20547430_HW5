@@ -121,7 +121,7 @@ namespace u20547430_HW5.Models
                             Book bk = new Book
                             {
                                 BookID = Convert.ToInt32(reader["bookId"]),
-                                Name = Convert.ToString(reader["name"]),
+                                BookName = Convert.ToString(reader["name"]),
                                 PageCount = Convert.ToInt32(reader["pagecount"]),
                                 Point = Convert.ToInt32(reader["point"]),
                                 AuthorID = Convert.ToInt32(reader["authorId"])
@@ -182,6 +182,7 @@ namespace u20547430_HW5.Models
                 //first check availibility
                 //select x(id) where x = x.
                 //update taken date 
+                //track no borrows
 
 
                 //return book (update brought back date and status = availible, use id?)
