@@ -125,6 +125,7 @@ namespace u20547430_HW5.Models
                                 PageCount = Convert.ToInt32(reader["pagecount"]),
                                 Point = Convert.ToInt32(reader["point"]),
                                 AuthorID = Convert.ToInt32(reader["authorId"])
+                                
                             };
                             books.Add(bk);
                         }
@@ -145,10 +146,10 @@ namespace u20547430_HW5.Models
 
                 {
                     con.Open();
-                    using (SqlCommand cmd = new SqlCommand("select * from books", con))
+                    using (SqlCommand cmd = new SqlCommand("select * from books where name = @name AND surname = @surname ", con))
                     {
                         cmd.Parameters.Add(new SqlParameter("@name", name));
-                        cmd.Parameters.Add(new SqlParameter("@surnamename", surname));
+                        cmd.Parameters.Add(new SqlParameter("@surname", surname));
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -177,8 +178,13 @@ namespace u20547430_HW5.Models
 
 
 
-                //borrow book
-                //return book
+                //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
+                //first check availibility
+                //select x(id) where x = x.
+                //update taken date 
+
+
+                //return book (update brought back date and status = availible, use id?)
             }
         }
     

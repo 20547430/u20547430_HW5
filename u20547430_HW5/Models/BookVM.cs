@@ -5,14 +5,13 @@ using System.Web;
 
 namespace u20547430_HW5.Models
 {
-    public class Book
+    public class BookVM
     {
         public int BookID { get; set; }
         public string Name { get; set; }
+        public string AuthorSurname { get; set; }
         public int PageCount { get; set; }
         public int Point { get; set; }
-        public int AuthorID { get; set; }
-        public int TypeID { get; set; }
 
 
     }
