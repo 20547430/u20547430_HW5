@@ -130,6 +130,7 @@
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\DataService.cs" />
+    <Compile Include="Models\StatsVM.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

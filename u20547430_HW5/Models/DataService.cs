@@ -244,6 +244,40 @@ namespace u20547430_HW5.Models
 
         }
 
+
+                                                                                    // student view //
+        public List<Student> GetStudents()
+        {
+            List<Student> students = new List<Student>();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("select students.studentId, students.name,students.surname,students.class,students.point from students", con))
+                {
+                    using(SqlDataReader reader= cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Student st = new Student
+                            {
+                                StudentID = (int)reader["studentId"],
+                                StudentName = (string)reader["name"],
+                                StudentSurname = (string)reader["surname"],
+                                Class = (string)reader["class"],
+                                Point = (int)reader["point"]
+                            };
+                            students.Add(st);
+                        }
+                    }
+                    con.Close();
+                }
+            }
+            return students;
+        }
+
+
+
+
         //first check availibility
         //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
         //select x(id) where x = x.

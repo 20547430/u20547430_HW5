@@ -28,3 +28,16 @@ namespace u20547430_HW5.Controllers
         }
     }
 }
+//borrow count 
+
+//public void BorrowCount()
+//{
+//    StatsVM statsVM = new StatsVM();
+
+//    currConnection.Open();
+//    //count agg. function
+//    SqlCommand getNoBorrows = new SqlCommand("select COUNT(borrows.bookId )from borrows group by bookId", currConnection);
+//    statsVM.NoBorrows = (int)getNoBorrows.ExecuteScalar();
+//}
+
+//status, datetime.now & datetime.come 
