@@ -5,6 +5,8 @@ using System.Web;
 
 namespace u20547430_HW5.Models
 {
+    //this is the book table
+
     public class Book
     {
         public int BookID { get; set; }
@@ -14,6 +16,10 @@ namespace u20547430_HW5.Models
         public int AuthorID { get; set; }
         public int TypeID { get; set; }
 
+
+
+
+       
 
     }
 }

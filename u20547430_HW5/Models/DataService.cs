@@ -68,26 +68,26 @@ namespace u20547430_HW5.Models
         // Read From Database 
 
         // get all books from db
-        public List<Book> getAllBooks()
+        public List<BookVM> getAllBooks()
         {
-            List<Book> books = new List<Book>();
+            List<BookVM> books = new List<BookVM>();
             using (SqlConnection con = new SqlConnection(ConnectionString))
 
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("select * from books", con))
+                using (SqlCommand cmd = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId", con))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Book bk = new Book
+                            BookVM bk = new BookVM
                             {
                                 BookID = Convert.ToInt32(reader["bookId"]),
-                                Name = Convert.ToString(reader["name"]),
+                                BookName = Convert.ToString(reader["name"]),
                                 PageCount = Convert.ToInt32(reader["pagecount"]),
                                 Point = Convert.ToInt32(reader["point"]),
-                                AuthorID = Convert.ToInt32(reader["authorId"])
+                                AuthorSurname = Convert.ToString(reader["surname"])
                             };
                             books.Add(bk);
                         }
@@ -99,18 +99,52 @@ namespace u20547430_HW5.Models
             }
             return books;
         }
+
         //serach books
-
-
-        //filter books by type
-        public List<Book> getAllBooksByType(string type)
+        public List<BookVM> SearchBook(string searchText)
         {
-            List<Book> books = new List<Book>();
+            List<BookVM> books = new List<BookVM>();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                con.Open();
+                SqlCommand bookSearch = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId where books.name like '%am%'", con))
+                SqlDataReader reader = bookSearch.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    BookVM bk = new BookVM
+                    {
+                        BookID = Convert.ToInt32(reader["bookId"]),
+                        BookName = Convert.ToString(reader["name"]),
+                        TypeName = Convert.ToString(reader["name"]),
+                        PageCount = Convert.ToInt32(reader["pagecount"]),
+                        Point = Convert.ToInt32(reader["point"]),
+                        AuthorSurname = Convert.ToString(reader["surname"])
+
+                    };
+                    books.Add(bk);
+                }
+                con.Close();
+
+            }
+            return books;
+        }
+
+        
+    }
+
+
+
+
+    //filter books by type
+    public List<BookVM> getAllBooksByType(string type)
+        {
+            List<BookVM> books = new List<BookVM>();
             using (SqlConnection con = new SqlConnection(ConnectionString))
 
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("select * from books", con))
+                using (SqlCommand cmd = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId", con))
                 {
                     cmd.Parameters.Add(new SqlParameter("@type", type));
 
@@ -118,13 +152,14 @@ namespace u20547430_HW5.Models
                     {
                         while (reader.Read())
                         {
-                            Book bk = new Book
+                            BookVM bk = new BookVM
                             {
                                 BookID = Convert.ToInt32(reader["bookId"]),
                                 BookName = Convert.ToString(reader["name"]),
+                                TypeName = Convert.ToString(reader["name"]),
                                 PageCount = Convert.ToInt32(reader["pagecount"]),
                                 Point = Convert.ToInt32(reader["point"]),
-                                AuthorID = Convert.ToInt32(reader["authorId"])
+                                AuthorSurname = Convert.ToString(reader["surname"])
                                 
                             };
                             books.Add(bk);
@@ -139,29 +174,30 @@ namespace u20547430_HW5.Models
         }
 
             //filter books by author (getAllBooksByAuthor)
-            public List<Book> getAllBooksByAuthor(string name, string surname)
+            public List<BookVM> getAllBooksByAuthor(string surname)
             {
-                List<Book> books = new List<Book>();
+                List<BookVM> books = new List<BookVM>();
                 using (SqlConnection con = new SqlConnection(ConnectionString))
 
                 {
                     con.Open();
-                    using (SqlCommand cmd = new SqlCommand("select * from books where name = @name AND surname = @surname ", con))
+                using (SqlCommand cmd = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId where surname = @surname", con))
+
                     {
-                        cmd.Parameters.Add(new SqlParameter("@name", name));
                         cmd.Parameters.Add(new SqlParameter("@surname", surname));
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                Book bk = new Book
+                                BookVM bk = new BookVM
                                 {
                                     BookID = Convert.ToInt32(reader["bookId"]),
-                                    Name = Convert.ToString(reader["name"]),
+                                    BookName = Convert.ToString(reader["name"]),
+                                    AuthorSurname = Convert.ToString(reader["surname"]),
+                                    TypeName=Convert.ToString(reader["name"]),
                                     PageCount = Convert.ToInt32(reader["pagecount"]),
-                                    Point = Convert.ToInt32(reader["point"]),
-                                    AuthorID = Convert.ToInt32(reader["authorId"])
+                                    Point = Convert.ToInt32(reader["point"])
                                 };
                                 books.Add(bk);
                             }
@@ -182,7 +218,7 @@ namespace u20547430_HW5.Models
                 //first check availibility
                 //select x(id) where x = x.
                 //update taken date 
-                //track no borrows
+
 
 
                 //return book (update brought back date and status = availible, use id?)

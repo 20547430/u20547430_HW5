@@ -13,7 +13,5 @@ namespace u20547430_HW5.Models
         public string TypeName { get; set; }
         public int PageCount { get; set; }
         public int Point { get; set; }
-
-
     }
 }
