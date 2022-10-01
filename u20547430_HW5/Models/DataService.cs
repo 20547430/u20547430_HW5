@@ -244,13 +244,8 @@ namespace u20547430_HW5.Models
 
         }
 
-
-
-
-
-
-        //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
         //first check availibility
+        //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
         //select x(id) where x = x.
         //update taken date 
 
@@ -258,6 +253,6 @@ namespace u20547430_HW5.Models
 
         //return book (update brought back date and status = availible, use id?)
     }
-        }
+}
 
     
