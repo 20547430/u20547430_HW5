@@ -108,7 +108,7 @@ namespace u20547430_HW5.Models
 
             {
                 con.Open();
-                using (SqlCommand cmd = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId where books.name like '%searchText%'", con))
+                using (SqlCommand cmd = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId where books.name like ''%" + searchText + "%' ", con))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -211,14 +211,14 @@ namespace u20547430_HW5.Models
             }
 
 
-        //bookDetails VM
+                                                                         //bookDetails VM//
         public List<BookDetail> GetBookDetails(int bookId)
         {
             List<BookDetail> bookDetails = new List<BookDetail>();
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 con.Open();
-                using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrowsinner join students on borrows.studentId = students.studentId where borrows.bookId =@bookId", con))
+                using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrows inner join students on borrows.studentId = students.studentId where bookId =@bookId", con))
                 {
                     cmd.Parameters.Add(new SqlParameter("@bookId", bookId));
 
@@ -246,6 +246,8 @@ namespace u20547430_HW5.Models
 
 
                                                                                     // student view //
+
+        //get students
         public List<Student> GetStudents()
         {
             List<Student> students = new List<Student>();
@@ -275,8 +277,73 @@ namespace u20547430_HW5.Models
             return students;
         }
 
+        //filter by class 
+
+        public List<Student> GetStudentsByClass(string stClass)
+        {
+            List<Student> students = new List<Student>();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("select students.studentId, students.name,students.surname,students.class,students.point from students  where class = @class", con))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@class", stClass));
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Student st = new Student
+                            {
+                                StudentID = (int)reader["studentId"],
+                                StudentName = (string)reader["name"],
+                                StudentSurname = (string)reader["surname"],
+                                Class = (string)reader["class"],
+                                Point = (int)reader["point"]
+                            };
+                            students.Add(st);
+                        }
+                    }
+                    con.Close();
+                }
+            }
+            return students;
+        }
+
+        //search by stu name 
 
 
+        public List<Student> SearchStudent(string searchName)
+        {
+            List<Student> students = new List<Student>();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("select students.studentId, students.name, students.surname, students.class,students.point from students where name like '%" + searchName + "%' OR surname LIKE '%" + searchName + "%' ", con))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Student st = new Student
+                            {
+                                StudentID = (int)reader["studentId"],
+                                StudentName = (string)reader["name"],
+                                StudentSurname = (string)reader["surname"],
+                                Class = (string)reader["class"],
+                                Point = (int)reader["point"]
+                            };
+                            students.Add(st);
+                        }
+                    
+                    }
+
+                }
+                con.Close();
+
+            }
+            return students;
+        }
 
         //first check availibility
         //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
