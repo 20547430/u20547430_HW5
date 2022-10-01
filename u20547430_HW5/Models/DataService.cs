@@ -105,34 +105,33 @@ namespace u20547430_HW5.Models
         {
             List<BookVM> books = new List<BookVM>();
             using (SqlConnection con = new SqlConnection(ConnectionString))
+
             {
                 con.Open();
-                SqlCommand bookSearch = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId where books.name like '%am%'", con))
-                SqlDataReader reader = bookSearch.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlCommand cmd = new SqlCommand("select books.name,books.pagecount,books.point,books.authorId,books.bookId, types.typeId, types.name from books inner join authors on books.authorId = authors.authorId inner join types on books.typeId = types.typeId where books.name like '%searchText%'", con))
                 {
-                    BookVM bk = new BookVM
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        BookID = Convert.ToInt32(reader["bookId"]),
-                        BookName = Convert.ToString(reader["name"]),
-                        TypeName = Convert.ToString(reader["name"]),
-                        PageCount = Convert.ToInt32(reader["pagecount"]),
-                        Point = Convert.ToInt32(reader["point"]),
-                        AuthorSurname = Convert.ToString(reader["surname"])
+                        while (reader.Read())
+                        {
+                            BookVM bk = new BookVM
+                            {
+                                BookID = Convert.ToInt32(reader["bookId"]),
+                                BookName = Convert.ToString(reader["name"]),
+                                PageCount = Convert.ToInt32(reader["pagecount"]),
+                                Point = Convert.ToInt32(reader["point"]),
+                                AuthorSurname = Convert.ToString(reader["surname"])
+                            };
+                            books.Add(bk);
+                        }
+                    }
 
-                    };
-                    books.Add(bk);
                 }
                 con.Close();
 
             }
             return books;
         }
-
-        
-    }
-
 
 
 
@@ -212,16 +211,53 @@ namespace u20547430_HW5.Models
             }
 
 
+        //bookDetails VM
+        public List<BookDetail> GetBookDetails(int bookId)
+        {
+            List<BookDetail> bookDetails = new List<BookDetail>();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                con.Open();
+                using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrowsinner join students on borrows.studentId = students.studentId where borrows.bookId =@bookId", con))
+                {
+                    cmd.Parameters.Add(new SqlParameter("@bookId", bookId));
 
-
-                //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
-                //first check availibility
-                //select x(id) where x = x.
-                //update taken date 
-
-
-
-                //return book (update brought back date and status = availible, use id?)
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            BookDetail bkDetail = new BookDetail
+                            {
+                                BookID = Convert.ToInt32(reader["bookId"]),
+                                TakenDate = Convert.ToDateTime(reader["takenDate"]),
+                                BroughtDate=Convert.ToDateTime(reader["broughtDate"]),
+                                Borrowedby=Convert.ToString(reader["name"+"surname"])
+                            };
+                            bookDetails.Add(bkDetail);
+                        }
+                    }
+                }
+                con.Close();
             }
+            return bookDetails;
+
+
         }
+
+
+
+
+
+
+        //borrow book (want to take book out, remove from avail books in db, update taken date and status == OUT (in contoller i think), acess using id?)
+        //first check availibility
+        //select x(id) where x = x.
+        //update taken date 
+
+
+
+        //return book (update brought back date and status = availible, use id?)
+    }
+        }
+
     
