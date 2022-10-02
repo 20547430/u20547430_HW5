@@ -12,6 +12,9 @@ namespace u20547430_HW5.Models
         private SqlConnectionStringBuilder stringBuilder = new SqlConnectionStringBuilder();
         private SqlConnection currConnection;
         private String ConnectionString;
+          public void setConnectionString(String someConnStr) {
+            ConnectionString = someConnStr;
+        }
 
 
         private static DataService instance;
@@ -220,7 +223,9 @@ namespace u20547430_HW5.Models
                 con.Open();
                 using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrows inner join students on borrows.studentId = students.studentId where bookId = "+bookId, con))
                 {
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                    cmd.Parameters.Add(new SqlParameter("@bookId", bookId));
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         { 
