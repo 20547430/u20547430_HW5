@@ -21,9 +21,9 @@ namespace u20547430_HW5.Controllers
 
 
 
-        public ActionResult viewBookDetails()
+        public ActionResult viewBookDetails(int bookId)
         {
-            List<BookDetail> bookDetails = dataService.getBookDetails(int bookId);
+            List<BookDetail> bookDetails = dataService.getBookDetails(bookId);
             return View(bookDetails);
         }
 

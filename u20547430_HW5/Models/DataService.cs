@@ -218,7 +218,7 @@ namespace u20547430_HW5.Models
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 con.Open();
-                using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrows inner join students on borrows.studentId = students.studentId where bookId =@bookId", con))
+                using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrows inner join students on borrows.studentId = students.studentId where bookId = "+bookId, con))
                 {
                         using (SqlDataReader reader = cmd.ExecuteReader())
                     {
