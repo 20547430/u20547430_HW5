@@ -3,16 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using u20547430_HW5.Models;
+
 
 namespace u20547430_HW5.Controllers
 {
     public class HomeController : Controller
     {
+        private DataService dataService = DataService.getDataService();
+
         public ActionResult Index()
         {
-            return View();
+            List<BookVM> books = dataService.getAllBooks();
+            return View(books);
         }
 
+
+
+
+        public ActionResult viewBookDetails()
+        {
+            List<BookDetail> bookDetails = dataService.getBookDetails(int bookId);
+            return View(bookDetails);
+        }
+
+        public ActionResult viewStudents()
+        {
+            List<Student> students = dataService.GetStudents();
+            return View(students);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

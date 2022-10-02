@@ -212,7 +212,7 @@ namespace u20547430_HW5.Models
 
 
                                                                          //bookDetails VM//
-        public List<BookDetail> GetBookDetails(int bookId)
+        public List<BookDetail> getBookDetails(int bookId)
         {
             List<BookDetail> bookDetails = new List<BookDetail>();
             using (SqlConnection con = new SqlConnection(ConnectionString))
@@ -220,12 +220,10 @@ namespace u20547430_HW5.Models
                 con.Open();
                 using(SqlCommand cmd = new SqlCommand ("select borrows.bookId, borrows.takenDate, borrows.broughtDate,borrows.studentId,students.name,students.surname from borrows inner join students on borrows.studentId = students.studentId where bookId =@bookId", con))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@bookId", bookId));
-
                         using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
-                        {
+                        { 
                             BookDetail bkDetail = new BookDetail
                             {
                                 BookID = Convert.ToInt32(reader["bookId"]),
